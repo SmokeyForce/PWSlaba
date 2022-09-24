@@ -17,12 +17,13 @@ namespace PWSlaba.Controllers
         {
             _logger = logger;
         }
-
+        [Route("home")]
+        [Route("")]
         public IActionResult Index()
         {
             return View();
         }
-
+        [Route("about-us")]
         public IActionResult AboutUs()
         {
             return View();
