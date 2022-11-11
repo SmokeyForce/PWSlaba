@@ -1,0 +1,55 @@
+﻿@using PWSlaba.Services.Models
+@model             IEnumerable<PWSlaba.Services.Models.FileModel>
+@{
+    ViewData["Title"] = "Files";
+    ViewData["HeaderImage"] = "/assets/img/upload-files-bg.jpg";
+}
+@section Header{  <div class="page-heading">
+        <h1>Upload Files</h1>
+        <span class="subheading">Upload your files here</span>
+    </div>}
+
+<main class="mb-4">
+    <div class="container px-4 px-lg-5">
+        <div class="row gx-4 gx-lg-5 justify-content-center">
+            <div class="col-md-10 col-lg-8 col-xl-7">
+                <div>
+                    <form method="post" action="~/upload-file" enctype="multipart/form-data">
+
+                        <div class="mb-3">
+                            <label for="fileInput" class="form-label">Завантажити новий файл</label>
+                            <input type="file" class="form-control" id="fileInput" aria-describedby="emailHelp" name="File">
+
+                        </div>
+                        <button type="submit" class="btn btn-primary">Відправити</button>
+                    </form>
+                </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Назва файлу</th>
+                            <th scope="col">Завантажити</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @{
+                            int i = 0;
+                        }
+                        @foreach (FileModel fm in Model)
+                        {
+
+                            <tr>
+                                <td>@(i+1)</td>
+                                <td><a href="~/Files/@fm.FileName" target="_blank">@fm.FileName</a></td>
+                                <td><a href="~/download-file?filename=@fm.FileName">Завантажити</a></td>
+                            </tr>
+
+                            i++;
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</main>
