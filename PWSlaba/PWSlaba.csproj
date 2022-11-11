@@ -12,4 +12,8 @@
     <ProjectReference Include="..\PWSlaba.Services\PWSlaba.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Files\" />
+  </ItemGroup>
+
 </Project>
