@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
+using System;
 
 namespace PWSlaba.Controllers
 {
@@ -77,6 +79,14 @@ namespace PWSlaba.Controllers
             var res = await _fileService.UploadFile(File, "wwwroot/Files");
 
             return RedirectToAction(nameof(UploadFiles));
+        }
+        [Route("change-culture")]
+        public IActionResult CultureManagement(string culture, string returnUrl)
+        {
+            Response.Cookies.Append(CookieRequestCultureProvider.DefaultCookieName, CookieRequestCultureProvider.MakeCookieValue(new RequestCulture(culture)),
+                new CookieOptions { Expires = DateTimeOffset.Now.AddDays(30), IsEssential = true });
+
+            return LocalRedirect(returnUrl);
         }
     }
 }
