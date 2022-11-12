@@ -1,3 +1,4 @@
+using FluentValidation;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
@@ -10,9 +11,11 @@ using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using PWSlaba.FileLogger;
+using PWSlaba.Models;
 using PWSlaba.Services.Helpers;
 using PWSlaba.Services.Interfaces;
 using PWSlaba.Services.Services;
+using PWSlaba.Validators;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -37,6 +40,7 @@ namespace PWSlaba
             services.AddControllersWithViews();
             services.AddTransient<IEmailSender, EmailSender>();
             services.AddTransient<IFileService, FileService>();
+            services.AddScoped<IValidator<Person>,PersonValidator>();
             services.Configure<MailSettings>(Configuration.GetSection("EmailSettings"));
             services.AddLocalization(options => options.ResourcesPath = "Resources");
             services.AddMvc().AddViewLocalization(Microsoft.AspNetCore.Mvc.Razor.LanguageViewLocationExpanderFormat.Suffix)

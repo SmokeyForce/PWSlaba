@@ -9,6 +9,9 @@ using System.IO;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Localization;
 using System;
+using FluentValidation.Results;
+using FluentValidation;
+using PWSlaba.Validators;
 
 namespace PWSlaba.Controllers
 {
@@ -18,13 +21,15 @@ namespace PWSlaba.Controllers
         private readonly IFileService _fileService;
         private readonly ILogger<HomeController> _logger;
         private readonly IWebHostEnvironment _webHostEnvironment;
+        private IValidator<Person> _validator;
 
-        public HomeController(ILogger<HomeController> logger, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment, IFileService fileService)
+        public HomeController(ILogger<HomeController> logger, IEmailSender emailSender, IWebHostEnvironment webHostEnvironment, IFileService fileService, IValidator<Person> validator)
         {
             _logger = logger;
             _emailSender = emailSender;
             _webHostEnvironment = webHostEnvironment;
             _fileService = fileService;
+            _validator = validator;
         }
         [Route("home")]
         [Route("")]
@@ -39,6 +44,11 @@ namespace PWSlaba.Controllers
         }
         [Route("feed-back")]
         public IActionResult FeedBack()
+        {
+            return View();
+        }
+        [Route("add-person")]
+        public IActionResult AddPerson()
         {
             return View();
         }
@@ -87,6 +97,23 @@ namespace PWSlaba.Controllers
                 new CookieOptions { Expires = DateTimeOffset.Now.AddDays(30), IsEssential = true });
 
             return LocalRedirect(returnUrl);
+        }
+        [HttpPost]
+        [Route("")]
+        public async Task<IActionResult> Create(Person person, string returnUrl)
+        {
+            ValidationResult result = await _validator.ValidateAsync(person);
+
+            if (!result.IsValid)
+            {
+                // Copy the validation results into ModelState.
+                // ASP.NET uses the ModelState collection to populate 
+                // error messages in the View.
+                result.AddToModelState(this.ModelState);
+                // re-render the view when validation failed.
+                return View("AddPerson", person);
+            }
+            return RedirectToAction("Index");
         }
     }
 }

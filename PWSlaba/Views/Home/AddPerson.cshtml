@@ -1,0 +1,18 @@
+﻿@model Person
+
+<div asp-validation-summary="ModelOnly"></div>
+
+<form asp-action="Create">
+    Id: <input asp-for="Id" /> <span asp-validation-for="Id"></span>
+    <br />
+    Name: <input asp-for="Name" /> <span asp-validation-for="Name"></span>
+    <br />
+    Email: <input asp-for="Email" /> <span asp-validation-for="Email"></span>
+    <br />
+    Age: <input asp-for="Age" /> <span asp-validation-for="Age"></span>
+    <br />
+    Job: <input asp-for="Job" /> <span asp-validation-for="Job"></span>
+
+    <br /><br />
+    <input type="submit" value="submit" />
+</form>
